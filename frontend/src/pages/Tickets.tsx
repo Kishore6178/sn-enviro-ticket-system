@@ -130,8 +130,6 @@ export const Tickets: React.FC = () => {
           </div>
           <button 
             onClick={handleExportCSV}
-          <button 
-            onClick={handleExportCSV}
             className="h-[42px] px-4 bg-card border border-input rounded-lg flex items-center justify-center text-foreground hover:text-blue-600 hover:border-blue-300 hover:bg-secondary transition-all font-medium text-sm shadow-sm"
             title="Export to CSV"
           >
