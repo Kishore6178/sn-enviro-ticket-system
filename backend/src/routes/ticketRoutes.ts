@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTicket, getTickets, updateTicket, magicResolve, addComment } from '../controllers/ticketController';
+import { createTicket, getTickets, updateTicket, magicResolve, addComment, testSlaWarning } from '../controllers/ticketController';
 import { protect } from '../middleware/authMiddleware';
 
 const router = express.Router();
@@ -39,6 +39,9 @@ router
   .route('/')
   .post(createTicket as any)
   .get(protect as any, getTickets as any);
+
+// Test Route
+router.get('/test-sla', testSlaWarning as any);
 
 router
   .route('/:id')

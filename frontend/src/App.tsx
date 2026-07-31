@@ -16,6 +16,8 @@ import { Alerts } from './pages/Alerts';
 import { AdminPortal } from './pages/AdminPortal';
 import { Leaderboard } from './pages/Leaderboard';
 import ClientPortal from './pages/ClientPortal';
+import { db } from './services/db';
+import api from './services/api';
 
 // Dedicated Logout Handler Component
 const LogoutRoute = () => {
@@ -61,8 +63,38 @@ const AppRoutes = () => {
 
     socket.on('ticket_created', handleNewTicket);
 
+    // Global listener for PWA Offline Sync
+    const syncOfflineTickets = async () => {
+      try {
+        const offlineTickets = await db.offlineTickets.toArray();
+        if (offlineTickets.length > 0) {
+          toast.loading(`Syncing ${offlineTickets.length} offline ticket(s)...`, { id: 'sync' });
+          let successCount = 0;
+          for (const ticket of offlineTickets) {
+            try {
+              await api.post('/tickets', ticket.payload);
+              await db.offlineTickets.delete(ticket.id as number);
+              successCount++;
+            } catch (err) {
+              console.error('Failed to sync ticket:', err);
+            }
+          }
+          if (successCount > 0) {
+            toast.success(`Successfully synced ${successCount} ticket(s) to the cloud!`, { id: 'sync' });
+          } else {
+            toast.dismiss('sync');
+          }
+        }
+      } catch (err) {
+        console.error('Error during offline sync:', err);
+      }
+    };
+
+    window.addEventListener('online', syncOfflineTickets);
+
     return () => {
       socket.off('ticket_created', handleNewTicket);
+      window.removeEventListener('online', syncOfflineTickets);
     };
   }, [socket]);
 

@@ -38,6 +38,8 @@ export interface ITicket extends Document {
   slaWarningSent: boolean;
   comments: IComment[];
   activityLog: IActivityLog[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const ticketSchema = new Schema<ITicket>(

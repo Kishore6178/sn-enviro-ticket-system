@@ -4,8 +4,9 @@ import Ticket from '../models/Ticket';
 import Station from '../models/Station';
 import { AuthRequest } from '../middleware/authMiddleware';
 import User from '../models/User';
+import { Server } from 'socket.io';
+import { sendRegistrationAcknowledgement, sendAssignmentNotification, sendResolutionNotice, sendSLAWarning, sendAdminNewTicketNotification } from '../services/emailService';
 import { getIo } from '../socket';
-import { sendRegistrationAcknowledgement, sendAssignmentNotification, sendResolutionNotice, sendAdminNewTicketNotification } from '../services/emailService';
 
 // @desc    Create a new ticket
 // @route   POST /api/v1/tickets
@@ -424,6 +425,48 @@ export const addComment = async (req: AuthRequest, res: Response, next: NextFunc
     res.status(201).json({
       success: true,
       data: ticket,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    TEST ONLY: Force SLA Warning
+// @route   GET /api/v1/tickets/test-sla
+// @access  Public (for testing)
+export const testSlaWarning = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // Find a ticket assigned to someone
+    const ticket = await Ticket.findOne({ assignedTo: { $exists: true, $ne: null } }).populate('assignedTo');
+    
+    if (!ticket) {
+      res.status(404).json({ success: false, message: 'No assigned tickets found to test with. Assign a ticket first.' });
+      return;
+    }
+
+    const assignee = ticket.assignedTo as any;
+    if (!assignee || !assignee.email) {
+      res.status(400).json({ success: false, message: 'Assignee has no email.' });
+      return;
+    }
+
+    // Force send the warning email
+    const details = {
+      ticketId: ticket.ticketId,
+      subject: ticket.subject,
+      industryName: ticket.stationId ? 'Test Facility' : 'Unknown',
+      stationNumber: ticket.stationId ? '01' : '00',
+      resolutionToken: ticket.resolutionToken || 'N/A'
+    };
+
+    const success = await sendSLAWarning(assignee.email, details);
+
+    res.json({
+      success: true,
+      message: success 
+        ? `Test SLA warning email successfully sent to ${assignee.email}` 
+        : 'Failed to send test email',
+      simulatedTicket: ticket.ticketId
     });
   } catch (error) {
     next(error);
