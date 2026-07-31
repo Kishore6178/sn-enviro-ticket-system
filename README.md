@@ -122,5 +122,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 <div align="center">
-  <h3>✨ Built and Deployed by Jaswanth ✨</h3>
+  <h3>✨ Built and Deployed by Kishore ✨</h3>
 </div>
