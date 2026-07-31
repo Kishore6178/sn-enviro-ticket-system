@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Settings as SettingsIcon, Save } from 'lucide-react';
+import { Settings as SettingsIcon, Save, Moon, Sun } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 
 export const Settings: React.FC = () => {
   const { user, login } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [name, setName] = useState(user?.name || '');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -104,6 +106,41 @@ export const Settings: React.FC = () => {
             </button>
           </div>
         </form>
+      </div>
+      
+      {/* Appearance Section */}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mt-8">
+        <div className="p-6 border-b border-gray-100 bg-gray-50">
+          <h3 className="font-semibold text-gray-900">Appearance</h3>
+          <p className="text-sm text-gray-500">Customize how the dashboard looks.</p>
+        </div>
+        
+        <div className="p-6 space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-gray-100 rounded-lg">
+                {theme === 'dark' ? <Moon className="h-5 w-5 text-gray-700" /> : <Sun className="h-5 w-5 text-gray-700" />}
+              </div>
+              <div>
+                <p className="font-medium text-gray-900">Dark Mode</p>
+                <p className="text-sm text-gray-500">Toggle dark mode on or off</p>
+              </div>
+            </div>
+            
+            <button
+              onClick={toggleTheme}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                theme === 'dark' ? 'bg-blue-600' : 'bg-gray-200'
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  theme === 'dark' ? 'translate-x-6' : 'translate-x-1'
+                }`}
+              />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

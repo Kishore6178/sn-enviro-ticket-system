@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { useSocket } from '../context/SocketContext';
 import { differenceInHours, format } from 'date-fns';
-import { Search, Filter, Layers, Calendar, Clock as ClockIcon, User as UserIcon } from 'lucide-react';
+import { Search, Filter, Layers, Calendar, Clock as ClockIcon, User as UserIcon, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 export const Tickets: React.FC = () => {
   const [tickets, setTickets] = useState<any[]>([]);
@@ -74,6 +75,35 @@ export const Tickets: React.FC = () => {
     t.subject.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleExportCSV = () => {
+    if (filteredTickets.length === 0) {
+      toast.error('No tickets to export');
+      return;
+    }
+    
+    const headers = ['Ticket ID', 'Status', 'Created At', 'Station', 'Subject', 'Assigned To'];
+    const csvContent = [
+      headers.join(','),
+      ...filteredTickets.map(t => {
+        const station = t.stationId?.stationNumber || 'Unknown';
+        const assignedTo = t.assignedTo?.name || 'Unassigned';
+        // Escape commas and quotes in subject
+        const subject = `"${t.subject.replace(/"/g, '""')}"`;
+        return `${t.ticketId},${t.status},${new Date(t.createdAt).toISOString()},${station},${subject},${assignedTo}`;
+      })
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `tickets_export_${format(new Date(), 'yyyy-MM-dd')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('CSV Exported Successfully');
+  };
+
   return (
     <div className="space-y-8 max-w-[1600px] mx-auto pb-12">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -98,6 +128,14 @@ export const Tickets: React.FC = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+          <button 
+            onClick={handleExportCSV}
+            className="h-[42px] px-4 bg-white border border-gray-300 rounded-lg flex items-center justify-center text-gray-700 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-all font-medium text-sm shadow-sm"
+            title="Export to CSV"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Export CSV
+          </button>
           <button className="h-[42px] px-4 bg-white border border-gray-300 rounded-lg flex items-center justify-center text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all">
             <Filter className="h-4 w-4" />
           </button>
