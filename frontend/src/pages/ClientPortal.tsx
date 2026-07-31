@@ -1,16 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, Send, Hexagon, X, MapPin, AlertCircle, FileText, Factory, CheckCircle, LogIn } from 'lucide-react';
+import { Camera, Send, Hexagon, X, MapPin, AlertCircle, FileText, Factory, CheckCircle, LogIn, Sun, Moon } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import api from '../services/api';
 import { db } from '../services/db';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 
 export default function App() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const [formData, setFormData] = useState({
     stationId: '',
@@ -161,13 +163,17 @@ export default function App() {
       <div className="min-h-screen bg-gradient-to-br from-background via-white to-secondary/30 relative font-sans overflow-x-hidden">
         
         {/* Header */}
-        <header className="w-full bg-card/50 backdrop-blur-md border-b border-border py-4 px-6 flex justify-center items-center sticky top-0 z-50">
-          <div className="flex items-center space-x-3">
+        <header className="w-full bg-card/50 backdrop-blur-md border-b border-border py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+          <div className="w-10 invisible hidden sm:block"></div> {/* Spacer for centering on desktop */}
+          <div className="flex items-center space-x-3 mx-auto sm:mx-0">
              <div className="relative">
                 <img src="/logo.jpeg" alt="Logo" className="h-10 w-10 object-cover rounded-full border border-white/50 shadow-sm" />
              </div>
              <h1 className="text-xl font-bold text-foreground tracking-tight">SN enviro <span className="text-primary">Support</span></h1>
           </div>
+          <button onClick={toggleTheme} className="p-2 rounded-full bg-card hover:bg-secondary border border-border shadow-sm text-muted-foreground hover:text-foreground transition-colors shrink-0">
+            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </button>
         </header>
 
         {/* Background decorative blobs */}
