@@ -12,7 +12,7 @@ This ecosystem bridges the gap between on-site field engineers (who report issue
 
 ## 🚀 Key Features
 
-* **Dual Interface Architecture**: Two entirely separate, purpose-built interfaces served from a single frontend:
+* **Dual Interface Architecture**: Two entirely separate, purpose-built interfaces served from a single frontend repository:
   * **🎛️ Admin Dashboard**: A sleek, glassmorphic React/Tailwind web app for administrators to view live event feeds, manage SLA timers, and analyze ticket status overview charts.
   * **📱 Field Portal (PWA)**: A highly-responsive, mobile-first Progressive Web App tailored for field workers to instantly report issues, capture GPS locations, and upload photo evidence.
 * **🔌 Offline PWA Support (IndexedDB)**: Field engineers can submit tickets completely offline. Tickets are securely queued in local storage and silently background-synced the moment cellular/WiFi connection is restored.
@@ -90,6 +90,8 @@ The brain of the operation, handling all business logic, routing, and database t
    npm install
    npm run dev
    ```
+
+*(Note: Both the Admin Dashboard and the Field Client Portal are bundled into the same frontend directory!)*
 
 ---
 
