@@ -8,6 +8,13 @@ export interface IComment {
   createdAt: Date;
 }
 
+export interface IActivityLog {
+  action: 'CREATED' | 'ASSIGNED' | 'STATUS_CHANGED' | 'COMMENT_ADDED';
+  performedBy: string;
+  details: string;
+  timestamp: Date;
+}
+
 export interface ITicket extends Document {
   ticketId: string;
   stationId: mongoose.Types.ObjectId;
@@ -29,6 +36,7 @@ export interface ITicket extends Document {
   notes?: string;
   contactEmail?: string;
   comments: IComment[];
+  activityLog: IActivityLog[];
 }
 
 const ticketSchema = new Schema<ITicket>(
@@ -112,6 +120,14 @@ const ticketSchema = new Schema<ITicket>(
         authorName: { type: String, required: true },
         authorRole: { type: String, required: true },
         createdAt: { type: Date, default: Date.now }
+      }
+    ],
+    activityLog: [
+      {
+        action: { type: String, enum: ['CREATED', 'ASSIGNED', 'STATUS_CHANGED', 'COMMENT_ADDED'], required: true },
+        performedBy: { type: String, required: true },
+        details: { type: String, required: true },
+        timestamp: { type: Date, default: Date.now }
       }
     ]
   },

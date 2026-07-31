@@ -77,6 +77,12 @@ export const createTicket = async (req: AuthRequest, res: Response, next: NextFu
       remotePassword,
       fieldEngineerLocation,
       contactEmail,
+      activityLog: [{
+        action: 'CREATED',
+        performedBy: req.user?.name || 'Field Engineer (Public)',
+        details: 'Ticket was created and logged into the system.',
+        timestamp: new Date()
+      }]
     });
 
     const populatedTicket = await Ticket.findById(ticket._id)
@@ -210,7 +216,16 @@ export const updateTicket = async (req: AuthRequest, res: Response, next: NextFu
       return next(new Error('Not authorized to update this ticket'));
     }
 
-    if (status) ticket.status = status;
+    if (status && status !== ticket.status) {
+      ticket.status = status;
+      ticket.activityLog.push({
+        action: 'STATUS_CHANGED',
+        performedBy: req.user?.name || 'Unknown User',
+        details: `Status updated to ${status}`,
+        timestamp: new Date()
+      });
+    }
+    
     if (notes) ticket.notes = notes;
     
     // Only admin can reassign tickets generally
@@ -238,6 +253,13 @@ export const updateTicket = async (req: AuthRequest, res: Response, next: NextFu
       if (!ticket.resolutionToken) {
         ticket.resolutionToken = crypto.randomBytes(16).toString('hex');
       }
+
+      ticket.activityLog.push({
+        action: 'ASSIGNED',
+        performedBy: req.user?.name || 'Admin',
+        details: `Assigned ticket to a technician`,
+        timestamp: new Date()
+      });
     }
 
     const updatedTicket = await ticket.save();
@@ -325,6 +347,13 @@ export const magicResolve = async (req: Request, res: Response, next: NextFuncti
       ticket.notes = ticket.notes ? `${ticket.notes}\n\n[Engineer marked as fixed without notes]` : `[Engineer marked as fixed without notes]`;
     }
     
+    ticket.activityLog.push({
+      action: 'STATUS_CHANGED',
+      performedBy: 'Field Engineer (Magic Link)',
+      details: 'Marked ticket as resolved and changed status to Pending Review',
+      timestamp: new Date()
+    });
+    
     // Clear the token so it can't be reused
     ticket.resolutionToken = undefined; 
     
@@ -374,6 +403,13 @@ export const addComment = async (req: AuthRequest, res: Response, next: NextFunc
     };
 
     ticket.comments.push(comment);
+    ticket.activityLog.push({
+      action: 'COMMENT_ADDED',
+      performedBy: req.user.name,
+      details: 'Added an internal discussion comment',
+      timestamp: new Date()
+    });
+    
     await ticket.save();
 
     // Re-fetch or just construct the payload to emit

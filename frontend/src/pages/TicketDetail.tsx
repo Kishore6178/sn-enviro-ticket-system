@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import toast from 'react-hot-toast';
-import { ArrowLeft, MapPin, CheckCircle, Cpu, Clock, Mail, User, ArrowRight, ExternalLink, X, AlertCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, CheckCircle, Cpu, Clock, Mail, User, ArrowRight, ExternalLink, X, AlertCircle, History } from 'lucide-react';
 import { engineersData } from '../lib/engineers';
 import { useSocket } from '../context/SocketContext';
 import { useAuth } from '../context/AuthContext';
-import { Send, MessageSquare } from 'lucide-react';
+import { Send, MessageSquare, Activity } from 'lucide-react';
 
 export const TicketDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -370,6 +370,36 @@ export const TicketDetail: React.FC = () => {
                   )}
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* NEW: Activity Timeline / Audit Trail */}
+          <div className="bg-card rounded-2xl border border-border p-8 shadow-sm">
+            <div className="flex items-center space-x-3 border-b border-border pb-5 mb-8">
+              <div className="p-2.5 bg-purple-50 dark:bg-purple-500/10 rounded-xl text-purple-600 dark:text-purple-400">
+                <History className="h-6 w-6" />
+              </div>
+              <h3 className="text-xl font-bold text-foreground tracking-tight">Audit Trail</h3>
+            </div>
+            
+            <div className="relative border-l-2 border-border ml-3 space-y-8 pb-4">
+              {ticket.activityLog && ticket.activityLog.length > 0 ? (
+                ticket.activityLog.slice().reverse().map((log: any, idx: number) => (
+                  <div key={idx} className="relative pl-6">
+                    <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-card border-4 border-blue-500"></div>
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1 flex items-center">
+                      <Clock className="w-3 h-3 mr-1" /> {new Date(log.timestamp).toLocaleString()}
+                    </p>
+                    <h4 className="text-[14px] font-semibold text-foreground leading-snug">{log.details}</h4>
+                    <p className="text-xs text-muted-foreground mt-1.5 font-medium">by <span className="text-primary">{log.performedBy}</span></p>
+                  </div>
+                ))
+              ) : (
+                <div className="relative pl-6">
+                  <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-card border-4 border-gray-300"></div>
+                  <p className="text-sm text-muted-foreground italic">No activity logged yet.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
