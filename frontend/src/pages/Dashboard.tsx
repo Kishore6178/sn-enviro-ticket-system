@@ -4,7 +4,7 @@ import { Ticket, AlertTriangle, CheckCircle, Clock, Activity } from 'lucide-reac
 import api from '../services/api';
 import { useSocket } from '../context/SocketContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 export const Dashboard: React.FC = () => {
   const [tickets, setTickets] = useState<any[]>([]);
@@ -66,6 +66,19 @@ export const Dashboard: React.FC = () => {
     { name: 'Reviewing', count: pendingReviewCount, fill: '#f87171' },
     { name: 'Resolved', count: resolvedCount, fill: '#34d399' }
   ];
+
+  const issueCounts = tickets.reduce((acc, t) => {
+    const type = t.telemetryIssueType || 'Other';
+    acc[type] = (acc[type] || 0) + 1;
+    return acc;
+  }, {});
+
+  const PIE_COLORS = ['#06b6d4', '#8b5cf6', '#ec4899', '#f59e0b', '#3b82f6', '#10b981'];
+  const pieData = Object.keys(issueCounts).map((key, index) => ({
+    name: key,
+    value: issueCounts[key],
+    color: PIE_COLORS[index % PIE_COLORS.length]
+  })).sort((a, b) => b.value - a.value);
 
   if (loading) return <div className="p-8 text-cyan-400 animate-pulse font-medium">Initializing SN Enviro Dashboard...</div>;
 
@@ -179,6 +192,63 @@ export const Dashboard: React.FC = () => {
               <p className="text-muted-foreground font-mono text-sm">System Nominal - No Data</p>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Advanced Analytics Row */}
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-7 pt-2">
+        <div className="xl:col-span-3 bg-card/80 backdrop-blur-sm rounded-xl border border-border p-6 shadow-sm flex flex-col h-[400px]">
+          <h3 className="text-lg font-semibold text-foreground mb-1">Issue Distribution</h3>
+          <p className="text-xs text-muted-foreground mb-4">Breakdown of tickets by telemetry issue type</p>
+          {tickets.length > 0 && pieData.length > 0 ? (
+            <div style={{ width: '100%', height: 300, minWidth: 0, minHeight: 0 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="45%"
+                    innerRadius={60}
+                    outerRadius={90}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {pieData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} stroke="rgba(255,255,255,0.1)" />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', borderRadius: '12px', border: '1px solid #e5e7eb', color: '#111827' }}
+                    itemStyle={{ color: '#111827', fontWeight: 600 }}
+                  />
+                  <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '12px', color: '#6b7280' }} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="flex-1 flex flex-col justify-center items-center">
+              <Activity className="h-12 w-12 text-cyan-400/20 mb-4 animate-pulse" />
+              <p className="text-muted-foreground font-mono text-sm">No Categorized Data</p>
+            </div>
+          )}
+        </div>
+        
+        <div className="xl:col-span-4 bg-card/80 backdrop-blur-sm rounded-xl border border-border p-6 shadow-sm flex flex-col h-[400px]">
+          <h3 className="text-lg font-semibold text-foreground mb-1">Resolution Efficiency</h3>
+          <p className="text-xs text-muted-foreground mb-4">Target compliance metrics</p>
+          
+          <div className="flex-1 flex items-center justify-center">
+             <div className="grid grid-cols-2 gap-8 w-full max-w-lg">
+                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-6 text-center">
+                   <h4 className="text-4xl font-extrabold text-emerald-500 mb-2">{resolvedCount > 0 ? Math.round((resolvedCount / tickets.length) * 100) : 0}%</h4>
+                   <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">Total Resolution Rate</p>
+                </div>
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6 text-center">
+                   <h4 className="text-4xl font-extrabold text-blue-500 mb-2">{tickets.filter(t => t.status !== 'Resolved' && getTargetHours(t) > 0).length}</h4>
+                   <p className="text-sm font-semibold text-blue-700 dark:text-blue-400">Tickets Within Target</p>
+                </div>
+             </div>
+          </div>
         </div>
       </div>
     </div>
