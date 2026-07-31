@@ -95,6 +95,55 @@ export const sendEmail = async (to: string, subject: string, htmlContent: string
   }
 };
 
+export const sendSLAWarning = async (to: string, ticketDetails: any) => {
+  const mail = getTransporter();
+
+  const resolveLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/resolve/${ticketDetails.resolutionToken}`;
+
+  const htmlContent = `
+    <div style="background-color: #fef2f2; border-left: 4px solid #ef4444; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+      <h2 style="color: #991b1b; margin-top: 0; display: flex; items-center;">
+        ⚠️ URGENT: SLA Warning
+      </h2>
+      <p style="color: #7f1d1d; font-size: 15px; margin-bottom: 0;">
+        This ticket has been open for <strong>over 36 hours</strong> and is approaching the 48-hour SLA deadline. Please resolve it immediately.
+      </p>
+    </div>
+
+    <p class="greeting">Hello Technician,</p>
+    <p>This is an automated warning that the following ticket requires your immediate attention to prevent an SLA breach:</p>
+    
+    <div class="info-box" style="border-left-color: #ef4444;">
+      <p><span class="accent-blue" style="color: #ef4444;">Ticket ID:</span> #${ticketDetails.ticketId}</p>
+      <p><span class="accent-blue" style="color: #ef4444;">Subject:</span> ${ticketDetails.subject}</p>
+      <p><span class="accent-blue" style="color: #ef4444;">Location:</span> ${ticketDetails.industryName} (Station ${ticketDetails.stationNumber})</p>
+      <p><span class="accent-blue" style="color: #ef4444;">Time Open:</span> > 36 Hours</p>
+    </div>
+
+    <div style="margin-top: 35px; text-align: center;">
+      <a href="${resolveLink}" style="background-color: #ef4444; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px; box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2);">Mark as Resolved Immediately</a>
+    </div>
+  `;
+
+  const finalHtml = renderTemplate(htmlContent);
+
+  const mailOptions = {
+    from: `"SN Enviro Alerts" <${process.env.SMTP_USER}>`,
+    to,
+    subject: `⚠️ URGENT SLA WARNING: Ticket #${ticketDetails.ticketId} - ${ticketDetails.subject}`,
+    html: finalHtml,
+  };
+
+  try {
+    await mail.sendMail(mailOptions);
+    console.log(`SLA Warning email sent to ${to}`);
+    return true;
+  } catch (error) {
+    console.error(`Failed to send SLA warning email to ${to}:`, error);
+    return false;
+  }
+};
+
 export const sendRegistrationAcknowledgement = async (
   to: string, 
   ticketId: string, 

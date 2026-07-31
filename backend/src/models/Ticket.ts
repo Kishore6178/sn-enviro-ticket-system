@@ -35,6 +35,7 @@ export interface ITicket extends Document {
   };
   notes?: string;
   contactEmail?: string;
+  slaWarningSent: boolean;
   comments: IComment[];
   activityLog: IActivityLog[];
 }
@@ -113,6 +114,10 @@ const ticketSchema = new Schema<ITicket>(
     },
     contactEmail: {
       type: String,
+    },
+    slaWarningSent: {
+      type: Boolean,
+      default: false,
     },
     comments: [
       {
