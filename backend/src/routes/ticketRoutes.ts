@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTicket, getTickets, updateTicket, magicResolve } from '../controllers/ticketController';
+import { createTicket, getTickets, updateTicket, magicResolve, addComment } from '../controllers/ticketController';
 import { protect } from '../middleware/authMiddleware';
 
 const router = express.Router();
@@ -43,6 +43,8 @@ router
 router
   .route('/:id')
   .patch(protect as any, updateTicket as any);
+
+router.post('/:id/comments', protect as any, addComment as any);
 
 // Public route for engineers to resolve via magic link
 router.patch('/:id/magic-resolve', magicResolve as any);

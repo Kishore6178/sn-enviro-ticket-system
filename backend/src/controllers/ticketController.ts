@@ -347,3 +347,49 @@ export const magicResolve = async (req: Request, res: Response, next: NextFuncti
     next(error);
   }
 };
+
+// @desc    Add a comment to a ticket
+// @route   POST /api/v1/tickets/:id/comments
+// @access  Private
+export const addComment = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { text } = req.body;
+    const ticket = await Ticket.findById(req.params.id);
+
+    if (!ticket) {
+      res.status(404);
+      return next(new Error('Ticket not found'));
+    }
+
+    if (!req.user) {
+      res.status(401);
+      return next(new Error('Not authorized'));
+    }
+
+    const comment = {
+      text,
+      authorName: req.user.name,
+      authorRole: req.user.role,
+      createdAt: new Date(),
+    };
+
+    ticket.comments.push(comment);
+    await ticket.save();
+
+    // Re-fetch or just construct the payload to emit
+    const populatedTicket = await Ticket.findById(ticket._id)
+      .populate('stationId', 'stationNumber industryName location')
+      .populate('creatorId', 'name email')
+      .populate('assignedTo', 'name email')
+      .lean();
+
+    getIo().emit('ticket_updated', populatedTicket);
+
+    res.status(201).json({
+      success: true,
+      data: ticket,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

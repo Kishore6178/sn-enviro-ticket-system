@@ -4,6 +4,9 @@ import api from '../services/api';
 import toast from 'react-hot-toast';
 import { ArrowLeft, MapPin, CheckCircle, Cpu, Clock, Mail, User, ArrowRight, ExternalLink, X, AlertCircle } from 'lucide-react';
 import { engineersData } from '../lib/engineers';
+import { useSocket } from '../context/SocketContext';
+import { useAuth } from '../context/AuthContext';
+import { Send, MessageSquare } from 'lucide-react';
 
 export const TicketDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,6 +18,10 @@ export const TicketDetail: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [newComment, setNewComment] = useState('');
+  const [isPosting, setIsPosting] = useState(false);
+  const { socket } = useSocket();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchTicket = async () => {
@@ -33,6 +40,21 @@ export const TicketDetail: React.FC = () => {
     
     fetchTicket();
   }, [id]);
+
+  useEffect(() => {
+    if (!socket) return;
+    
+    const handleTicketUpdated = (updatedTicket: any) => {
+      if (updatedTicket._id === id) {
+        setTicket(updatedTicket);
+      }
+    };
+
+    socket.on('ticket_updated', handleTicketUpdated);
+    return () => {
+      socket.off('ticket_updated', handleTicketUpdated);
+    };
+  }, [socket, id]);
 
   const handleResolve = async () => {
     setIsResolving(true);
@@ -83,6 +105,23 @@ export const TicketDetail: React.FC = () => {
       setSelectedUser('');
     } catch (error) {
       toast.error('Error assigning ticket');
+    }
+  };
+
+  const handlePostComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+
+    setIsPosting(true);
+    try {
+      await api.post(`/tickets/${id}/comments`, { text: newComment });
+      setNewComment('');
+      // Socket will update the ticket state automatically
+    } catch (error) {
+      toast.error('Failed to post comment');
+      console.error(error);
+    } finally {
+      setIsPosting(false);
     }
   };
 
@@ -187,6 +226,62 @@ export const TicketDetail: React.FC = () => {
                   })()}
                 </div>
               )}
+            </div>
+          </div>
+
+          {/* NEW: Live Chat / Internal Notes Section */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[500px]">
+            <div className="p-5 border-b border-gray-100 bg-gray-50 flex items-center space-x-3">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <MessageSquare className="w-5 h-5 text-blue-600" />
+              </div>
+              <h3 className="font-bold text-gray-900 tracking-tight">Internal Discussion</h3>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-50/50">
+              {ticket.comments && ticket.comments.length > 0 ? (
+                ticket.comments.map((comment: any, idx: number) => {
+                  const isMe = user?.name === comment.authorName;
+                  return (
+                    <div key={idx} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
+                      <div className={`max-w-[80%] rounded-2xl px-5 py-3 ${isMe ? 'bg-blue-600 text-white rounded-tr-none' : 'bg-white border border-gray-200 text-gray-800 shadow-sm rounded-tl-none'}`}>
+                        <div className={`text-[11px] font-bold uppercase tracking-wider mb-1 ${isMe ? 'text-blue-200' : 'text-gray-400'}`}>
+                          {comment.authorName} • {comment.authorRole}
+                        </div>
+                        <p className="text-[14px] leading-relaxed whitespace-pre-wrap">{comment.text}</p>
+                      </div>
+                      <span className="text-[11px] text-gray-400 font-medium mt-1 mx-1">
+                        {new Date(comment.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="h-full flex flex-col items-center justify-center text-gray-400 space-y-3">
+                  <MessageSquare className="w-10 h-10 opacity-20" />
+                  <p className="font-medium">No comments yet. Start the discussion!</p>
+                </div>
+              )}
+            </div>
+
+            <div className="p-4 bg-white border-t border-gray-100">
+              <form onSubmit={handlePostComment} className="flex items-center space-x-3">
+                <input
+                  type="text"
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  placeholder="Type a message or internal note..."
+                  className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-[14px] text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                  disabled={isPosting}
+                />
+                <button
+                  type="submit"
+                  disabled={isPosting || !newComment.trim()}
+                  className="p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+                >
+                  <Send className="w-5 h-5" />
+                </button>
+              </form>
             </div>
           </div>
         </div>

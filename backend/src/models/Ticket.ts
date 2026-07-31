@@ -1,4 +1,12 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
+
+export interface IComment {
+  _id?: Types.ObjectId;
+  text: string;
+  authorName: string;
+  authorRole: string;
+  createdAt: Date;
+}
 
 export interface ITicket extends Document {
   ticketId: string;
@@ -20,6 +28,7 @@ export interface ITicket extends Document {
   };
   notes?: string;
   contactEmail?: string;
+  comments: IComment[];
 }
 
 const ticketSchema = new Schema<ITicket>(
@@ -97,6 +106,14 @@ const ticketSchema = new Schema<ITicket>(
     contactEmail: {
       type: String,
     },
+    comments: [
+      {
+        text: { type: String, required: true },
+        authorName: { type: String, required: true },
+        authorRole: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now }
+      }
+    ]
   },
   {
     timestamps: true,
