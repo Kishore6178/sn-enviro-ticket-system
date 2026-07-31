@@ -76,8 +76,8 @@ export const Dashboard: React.FC = () => {
           <Activity className="h-6 w-6 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">SN Enviro Dashboard</h2>
-          <p className="text-gray-600 text-sm mt-1 italic">"Efficiency is doing things right; effectiveness is doing the right things."</p>
+          <h2 className="text-2xl font-bold text-foreground">SN Enviro Dashboard</h2>
+          <p className="text-muted-foreground text-sm mt-1 italic">"Efficiency is doing things right; effectiveness is doing the right things."</p>
         </div>
       </div>
 
@@ -94,13 +94,13 @@ export const Dashboard: React.FC = () => {
             className={`bg-card/80 backdrop-blur-sm rounded-xl p-6 border ${stat.borderColor} shadow-sm transition-all duration-300 cursor-pointer ${stat.hover}`}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wide">{stat.title}</h3>
+              <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">{stat.title}</h3>
               <div className={`p-2 rounded-lg ${stat.bg}`}>
                 <stat.icon className={`h-5 w-5 ${stat.color}`} />
               </div>
             </div>
             <div className="flex items-baseline space-x-3">
-              <span className={`text-4xl font-bold text-gray-900`}>{stat.value}</span>
+              <span className={`text-4xl font-bold text-foreground`}>{stat.value}</span>
             </div>
           </div>
         ))}
@@ -109,7 +109,7 @@ export const Dashboard: React.FC = () => {
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-7 pt-4">
         {/* Live Ticket Feed */}
         <div className="xl:col-span-4 bg-card/80 backdrop-blur-sm rounded-xl border border-border p-6 shadow-sm overflow-hidden flex flex-col h-[500px]">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Live Ticket Feed</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-4">Live Ticket Feed</h3>
           <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
             <AnimatePresence>
               {tickets.slice(0, 20).map((ticket) => {
@@ -129,11 +129,11 @@ export const Dashboard: React.FC = () => {
                       <div className="flex items-center space-x-2 flex-wrap">
                         <span className="text-cyan-600 font-mono text-sm whitespace-nowrap">{ticket.ticketId}</span>
                         <span className="text-gray-400 text-xs hidden sm:inline">•</span>
-                        <span className="text-gray-900 font-medium truncate">{ticket.subject}</span>
+                        <span className="text-foreground font-medium truncate">{ticket.subject}</span>
                       </div>
-                      <p className="text-xs text-gray-600 mt-1 truncate">{ticket.stationId?.stationNumber || 'Unknown Station'} - {ticket.telemetryIssueType || 'General Issue'}</p>
+                      <p className="text-xs text-muted-foreground mt-1 truncate">{ticket.stationId?.stationNumber || 'Unknown Station'} - {ticket.telemetryIssueType || 'General Issue'}</p>
                     </div>
-                    <div className="flex sm:flex-col items-center sm:items-end shrink-0 bg-gray-50/50 sm:bg-transparent p-2 sm:p-0 rounded-md">
+                    <div className="flex sm:flex-col items-center sm:items-end shrink-0 bg-secondary/50 sm:bg-transparent p-2 sm:p-0 rounded-md">
                       {ticket.status !== 'Resolved' ? (
                         <div className={`flex items-center space-x-1 ${isCritical ? 'text-red-400 animate-pulse' : 'text-amber-400'}`}>
                           <Clock className="h-4 w-4" />
@@ -151,13 +151,13 @@ export const Dashboard: React.FC = () => {
               })}
             </AnimatePresence>
             {tickets.length === 0 && (
-              <div className="text-center text-gray-500 mt-10">No recent events.</div>
+              <div className="text-center text-muted-foreground mt-10">No recent events.</div>
             )}
           </div>
         </div>
         
         <div className="xl:col-span-3 bg-card/80 backdrop-blur-sm rounded-xl border border-border p-6 shadow-sm flex flex-col h-[500px]">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Ticket Status Overview</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-4">Ticket Status Overview</h3>
           {tickets.length > 0 ? (
             <div style={{ width: '100%', height: 350, minWidth: 0, minHeight: 0 }}>
               <ResponsiveContainer width="100%" height="100%">
@@ -176,7 +176,7 @@ export const Dashboard: React.FC = () => {
           ) : (
             <div className="flex-1 flex flex-col justify-center items-center">
               <Activity className="h-16 w-16 text-cyan-400/20 mb-4 animate-pulse" />
-              <p className="text-gray-500 font-mono text-sm">System Nominal - No Data</p>
+              <p className="text-muted-foreground font-mono text-sm">System Nominal - No Data</p>
             </div>
           )}
         </div>

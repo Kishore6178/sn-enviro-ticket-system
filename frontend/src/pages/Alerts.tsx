@@ -74,13 +74,13 @@ export const Alerts: React.FC = () => {
 
   return (
     <div className="space-y-8 max-w-[1400px] mx-auto pb-12">
-      <div className="flex items-center space-x-4 border-b border-gray-200 pb-4">
+      <div className="flex items-center space-x-4 border-b border-border pb-4">
         <div className="p-3 bg-red-100 rounded-xl flex items-center justify-center">
           <Bell className="w-8 h-8 text-red-600" />
         </div>
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Admin Alerts</h2>
-          <p className="text-gray-500 mt-1">Review tickets marked as fixed by engineers before resolving them.</p>
+          <h2 className="text-3xl font-bold text-foreground">Admin Alerts</h2>
+          <p className="text-muted-foreground mt-1">Review tickets marked as fixed by engineers before resolving them.</p>
         </div>
       </div>
 
@@ -89,19 +89,19 @@ export const Alerts: React.FC = () => {
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         </div>
       ) : tickets.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-200 p-12 text-center shadow-sm">
+        <div className="bg-card rounded-2xl border border-border p-12 text-center shadow-sm">
           <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-8 h-8 text-emerald-500" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">All Caught Up!</h3>
-          <p className="text-gray-500">There are no pending tickets awaiting your review.</p>
+          <h3 className="text-xl font-bold text-foreground mb-2">All Caught Up!</h3>
+          <p className="text-muted-foreground">There are no pending tickets awaiting your review.</p>
         </div>
       ) : (
         <div className="grid gap-4">
           {tickets.map((ticket) => {
             const isPending = ticket.status === 'Pending Review';
             return (
-            <div key={ticket._id} className={`bg-white rounded-xl border ${isPending ? 'border-red-200' : 'border-emerald-200'} shadow-sm hover:shadow-md transition-shadow p-6 relative overflow-hidden group`}>
+            <div key={ticket._id} className={`bg-card rounded-xl border ${isPending ? 'border-red-200' : 'border-emerald-200'} shadow-sm hover:shadow-md transition-shadow p-6 relative overflow-hidden group`}>
               <div className={`absolute top-0 left-0 w-1 h-full ${isPending ? 'bg-red-500' : 'bg-emerald-500'}`}></div>
               
               <div className="flex items-start justify-between">
@@ -110,26 +110,26 @@ export const Alerts: React.FC = () => {
                     <span className={`text-sm font-bold px-3 py-1 rounded-full ${isPending ? 'text-red-600 bg-red-50' : 'text-emerald-600 bg-emerald-50'}`}>
                       {isPending ? 'Needs Review' : 'Resolved'}
                     </span>
-                    <span className="text-sm text-gray-500 font-medium">
+                    <span className="text-sm text-muted-foreground font-medium">
                       {ticket.ticketId}
                     </span>
                   </div>
                   
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">{ticket.subject}</h3>
-                  <p className="text-gray-600 text-sm line-clamp-2 mb-4">{ticket.description}</p>
+                  <h3 className="text-xl font-bold text-foreground mb-1">{ticket.subject}</h3>
+                  <p className="text-muted-foreground text-sm line-clamp-2 mb-4">{ticket.description}</p>
                   
                   {ticket.notes && (
-                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-200 mb-4">
-                      <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center">
+                    <div className="bg-secondary rounded-lg p-4 border border-border mb-4">
+                      <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2 flex items-center">
                         <User className="w-3 h-3 mr-1" />
                         Engineer Notes
                       </div>
-                      <p className="text-gray-800 text-sm whitespace-pre-wrap font-medium">{ticket.notes}</p>
+                      <p className="text-foreground text-sm whitespace-pre-wrap font-medium">{ticket.notes}</p>
                     </div>
                   )}
 
-                  <div className="text-sm text-gray-500 flex items-center">
-                    Assigned to: <span className="font-bold text-gray-900 ml-1">{ticket.assignedTo?.name || 'Unknown'}</span>
+                  <div className="text-sm text-muted-foreground flex items-center">
+                    Assigned to: <span className="font-bold text-foreground ml-1">{ticket.assignedTo?.name || 'Unknown'}</span>
                     <span className="mx-2">•</span>
                     Completed: {format(new Date(ticket.updatedAt), 'MMM d, yyyy h:mm a')}
                   </div>

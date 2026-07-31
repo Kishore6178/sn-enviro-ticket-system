@@ -112,8 +112,8 @@ export const Tickets: React.FC = () => {
             <Layers className="h-6 w-6 text-blue-600" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Tickets</h2>
-            <p className="text-gray-500 text-sm mt-1">Manage and assign service requests</p>
+            <h2 className="text-2xl font-bold text-foreground">Tickets</h2>
+            <p className="text-muted-foreground text-sm mt-1">Manage and assign service requests</p>
           </div>
         </div>
         
@@ -123,32 +123,34 @@ export const Tickets: React.FC = () => {
             <input 
               type="text" 
               placeholder="Search ID, Station, or Subject..." 
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-gray-400"
+              className="w-full pl-10 pr-4 py-2.5 bg-card border border-input rounded-lg text-sm text-foreground focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-muted-foreground"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <button 
             onClick={handleExportCSV}
-            className="h-[42px] px-4 bg-white border border-gray-300 rounded-lg flex items-center justify-center text-gray-700 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-all font-medium text-sm shadow-sm"
+          <button 
+            onClick={handleExportCSV}
+            className="h-[42px] px-4 bg-card border border-input rounded-lg flex items-center justify-center text-foreground hover:text-blue-600 hover:border-blue-300 hover:bg-secondary transition-all font-medium text-sm shadow-sm"
             title="Export to CSV"
           >
             <Download className="h-4 w-4 mr-2" />
             Export CSV
           </button>
-          <button className="h-[42px] px-4 bg-white border border-gray-300 rounded-lg flex items-center justify-center text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-all">
+          <button className="h-[42px] px-4 bg-card border border-input rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-all">
             <Filter className="h-4 w-4" />
           </button>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-blue-600 animate-pulse font-medium">Loading Tickets...</div>
         ) : (
           <div className="w-full">
             {/* Desktop Table Header - Hidden on Mobile */}
-            <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 border-b border-gray-100 bg-gray-50/50 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 border-b border-border bg-secondary/50 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               <div className="col-span-2">Status</div>
               <div className="col-span-2">Ticket ID & Time</div>
               <div className="col-span-3">Station Target</div>
@@ -157,7 +159,7 @@ export const Tickets: React.FC = () => {
               <div className="col-span-1 text-right">Target</div>
             </div>
 
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-border">
               <AnimatePresence initial={false}>
                 {filteredTickets.map((ticket) => (
                   <motion.div 
@@ -166,22 +168,22 @@ export const Tickets: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
-                    className="group cursor-pointer hover:bg-blue-50/30 transition-colors p-4 md:px-6 md:py-4 flex flex-col md:grid md:grid-cols-12 md:gap-4 md:items-center relative"
+                    className="group cursor-pointer hover:bg-secondary transition-colors p-4 md:px-6 md:py-4 flex flex-col md:grid md:grid-cols-12 md:gap-4 md:items-center relative"
                     onClick={() => navigate(`/tickets/${ticket._id}`)}
                   >
                     {/* Mobile: Top Row with Status & Target */}
                     <div className="flex justify-between items-start md:hidden mb-3">
                       <div className="flex items-center space-x-2">
-                        <div className={`w-2.5 h-2.5 rounded-full ${getStatusDot(ticket.status)} ring-4 ring-white shadow-sm`} />
-                        <span className="font-semibold text-gray-800 text-sm">{ticket.status}</span>
+                        <div className={`w-2.5 h-2.5 rounded-full ${getStatusDot(ticket.status)} ring-4 ring-card shadow-sm`} />
+                        <span className="font-semibold text-foreground text-sm">{ticket.status}</span>
                       </div>
                       <div>{getTargetBadge(ticket.createdAt, ticket.status)}</div>
                     </div>
 
                     {/* Status Column (Desktop) */}
                     <div className="hidden md:flex items-center space-x-3 col-span-2">
-                      <div className={`w-2.5 h-2.5 rounded-full ${getStatusDot(ticket.status)} ring-4 ring-white shadow-sm`} />
-                      <span className="font-semibold text-gray-800 text-sm">{ticket.status}</span>
+                      <div className={`w-2.5 h-2.5 rounded-full ${getStatusDot(ticket.status)} ring-4 ring-card shadow-sm`} />
+                      <span className="font-semibold text-foreground text-sm">{ticket.status}</span>
                     </div>
 
                     {/* Ticket ID & Time Column */}
@@ -189,25 +191,25 @@ export const Tickets: React.FC = () => {
                       <div className="flex items-center space-x-2">
                         <span className="font-bold text-blue-600 font-mono tracking-tight text-lg md:text-base">{ticket.ticketId}</span>
                       </div>
-                      <div className="flex items-center text-xs text-gray-500 mt-1 space-x-2">
+                      <div className="flex items-center text-xs text-muted-foreground mt-1 space-x-2">
                         <span className="flex items-center"><Calendar className="w-3 h-3 mr-1" /> {format(new Date(ticket.createdAt), 'MMM d, yyyy')}</span>
-                        <span className="flex items-center text-gray-400"><ClockIcon className="w-3 h-3 mr-1" /> {format(new Date(ticket.createdAt), 'HH:mm')}</span>
+                        <span className="flex items-center text-muted-foreground"><ClockIcon className="w-3 h-3 mr-1" /> {format(new Date(ticket.createdAt), 'HH:mm')}</span>
                       </div>
                     </div>
 
                     {/* Station Target Column */}
                     <div className="col-span-3 mb-3 md:mb-0 flex flex-col">
-                      <span className="font-semibold text-gray-900 text-sm">
+                      <span className="font-semibold text-foreground text-sm">
                         Stn {ticket.stationId?.stationNumber || '??'}
                       </span>
-                      <span className="text-gray-500 text-xs mt-0.5 max-w-[200px] truncate">
+                      <span className="text-muted-foreground text-xs mt-0.5 max-w-[200px] truncate">
                         {ticket.stationId?.industryName?.replace('Manual: ', '') || 'Unknown Location'}
                       </span>
                     </div>
 
                     {/* Subject Column */}
                     <div className="col-span-2 mb-4 md:mb-0">
-                      <p className="text-sm text-gray-700 font-medium line-clamp-2 md:line-clamp-1 leading-snug">
+                      <p className="text-sm text-foreground font-medium line-clamp-2 md:line-clamp-1 leading-snug">
                         {ticket.subject}
                       </p>
                     </div>
@@ -215,14 +217,14 @@ export const Tickets: React.FC = () => {
                     {/* Assigned To Column */}
                     <div className="col-span-2 flex items-center mb-1 md:mb-0 min-w-0 pr-2">
                       {ticket.assignedTo?.name ? (
-                        <div className="flex items-center space-x-2 bg-gray-50 md:bg-transparent px-3 py-1.5 md:p-0 rounded-lg min-w-0 w-full">
+                        <div className="flex items-center space-x-2 bg-secondary md:bg-transparent px-3 py-1.5 md:p-0 rounded-lg min-w-0 w-full">
                           <div className="w-7 h-7 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center text-[11px] font-bold text-blue-700 shadow-sm shrink-0">
                             {ticket.assignedTo.name.charAt(0)}
                           </div>
-                          <span className="text-sm font-medium text-gray-800 truncate" title={ticket.assignedTo.name}>{ticket.assignedTo.name}</span>
+                          <span className="text-sm font-medium text-foreground truncate" title={ticket.assignedTo.name}>{ticket.assignedTo.name}</span>
                         </div>
                       ) : (
-                        <div className="flex items-center space-x-1.5 text-gray-400 bg-gray-50 md:bg-transparent px-3 py-1.5 md:p-0 rounded-lg">
+                        <div className="flex items-center space-x-1.5 text-muted-foreground bg-secondary md:bg-transparent px-3 py-1.5 md:p-0 rounded-lg">
                           <UserIcon className="w-4 h-4" />
                           <span className="text-xs font-semibold italic">Unassigned</span>
                         </div>
@@ -239,11 +241,11 @@ export const Tickets: React.FC = () => {
               
               {filteredTickets.length === 0 && (
                 <div className="text-center py-16 px-4">
-                  <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Search className="w-8 h-8 text-gray-400" />
+                  <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-8 h-8 text-muted-foreground" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">No tickets found</h3>
-                  <p className="text-gray-500 mt-1 max-w-sm mx-auto">We couldn't find any tickets matching your search or filters.</p>
+                  <h3 className="text-lg font-semibold text-foreground">No tickets found</h3>
+                  <p className="text-muted-foreground mt-1 max-w-sm mx-auto">We couldn't find any tickets matching your search or filters.</p>
                 </div>
               )}
             </div>

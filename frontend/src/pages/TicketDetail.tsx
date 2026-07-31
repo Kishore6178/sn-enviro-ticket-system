@@ -135,7 +135,7 @@ export const TicketDetail: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-12 px-4 sm:px-6">
-      <button onClick={() => navigate('/tickets')} className="flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 transition-colors">
+      <button onClick={() => navigate('/tickets')} className="flex items-center text-sm font-medium text-muted-foreground hover:text-blue-600 transition-colors">
         <ArrowLeft className="h-4 w-4 mr-2" />
         Back to Tickets
       </button>
@@ -143,17 +143,17 @@ export const TicketDetail: React.FC = () => {
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left Column: Details */}
         <div className="flex-1 space-y-6">
-          <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+          <div className="bg-card rounded-2xl border border-border p-8 shadow-sm">
             <div className="flex items-center space-x-4 mb-4">
-              <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">{ticket.subject}</h2>
+              <h2 className="text-3xl font-extrabold text-foreground tracking-tight">{ticket.subject}</h2>
               <span className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wide rounded-full ${ticket.status === 'Resolved' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
                 {ticket.status}
               </span>
             </div>
-            <h3 className="text-xl text-gray-500 font-mono font-semibold">#{ticket.ticketId}</h3>
+            <h3 className="text-xl text-muted-foreground font-mono font-semibold">#{ticket.ticketId}</h3>
             
-            <div className="flex flex-wrap items-center gap-4 mt-6 text-sm text-gray-500 font-medium">
-              <span className="flex items-center bg-gray-50 px-3.5 py-2 rounded-lg border border-gray-100"><Cpu className="w-4.5 h-4.5 mr-2.5 text-gray-400" /> Station {ticket.stationId?.stationNumber}</span>
+            <div className="flex flex-wrap items-center gap-4 mt-6 text-sm text-muted-foreground font-medium">
+              <span className="flex items-center bg-secondary px-3.5 py-2 rounded-lg border border-border"><Cpu className="w-4.5 h-4.5 mr-2.5 text-gray-400" /> Station {ticket.stationId?.stationNumber}</span>
               <span className="flex items-center"><MapPin className="w-4.5 h-4.5 mr-2 text-gray-400" /> {ticket.stationId?.industryName}</span>
               {ticket.telemetryIssueType && (
                 <span className="flex items-center bg-blue-50/50 px-3.5 py-2 rounded-lg border border-blue-100/50 text-blue-700 font-bold">
@@ -164,11 +164,11 @@ export const TicketDetail: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
             <div className="p-8 space-y-8">
               <div>
-                <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Issue Description</h4>
-                <p className="text-gray-700 leading-relaxed bg-gray-50 p-5 rounded-xl border border-gray-100 text-[15px]">{ticket.description}</p>
+                <h4 className="text-sm font-bold text-foreground mb-3 uppercase tracking-wider">Issue Description</h4>
+                <p className="text-foreground leading-relaxed bg-secondary p-5 rounded-xl border border-border text-[15px]">{ticket.description}</p>
               </div>
 
               {ticket.remoteSoftware && ticket.remoteSoftware !== 'None' && (
@@ -178,17 +178,17 @@ export const TicketDetail: React.FC = () => {
                     Remote Access Credentials
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                    <div className="bg-white p-4 rounded-xl border border-emerald-100/50 shadow-sm">
+                    <div className="bg-card p-4 rounded-xl border border-emerald-100/50 shadow-sm">
                       <span className="text-[11px] font-bold text-gray-400 uppercase block tracking-wider mb-1">Software Tool</span>
-                      <span className="text-[15px] font-bold text-gray-800">{ticket.remoteSoftware}</span>
+                      <span className="text-[15px] font-bold text-foreground">{ticket.remoteSoftware}</span>
                     </div>
-                    <div className="bg-white p-4 rounded-xl border border-emerald-100/50 shadow-sm">
+                    <div className="bg-card p-4 rounded-xl border border-emerald-100/50 shadow-sm">
                       <span className="text-[11px] font-bold text-gray-400 uppercase block tracking-wider mb-1">User ID / Name</span>
-                      <span className="text-[15px] font-mono font-bold text-gray-800 select-all">{ticket.remoteId || 'N/A'}</span>
+                      <span className="text-[15px] font-mono font-bold text-foreground select-all">{ticket.remoteId || 'N/A'}</span>
                     </div>
-                    <div className="bg-white p-4 rounded-xl border border-emerald-100/50 shadow-sm">
+                    <div className="bg-card p-4 rounded-xl border border-emerald-100/50 shadow-sm">
                       <span className="text-[11px] font-bold text-gray-400 uppercase block tracking-wider mb-1">Password</span>
-                      <span className="text-[15px] font-mono font-bold text-gray-800 select-all">{ticket.remotePassword || 'N/A'}</span>
+                      <span className="text-[15px] font-mono font-bold text-foreground select-all">{ticket.remotePassword || 'N/A'}</span>
                     </div>
                   </div>
                 </div>
@@ -196,7 +196,7 @@ export const TicketDetail: React.FC = () => {
 
               {ticket.s3ImageUrl && (
                 <div>
-                  <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wider">Attached Evidence</h4>
+                  <h4 className="text-sm font-bold text-foreground mb-3 uppercase tracking-wider">Attached Evidence</h4>
                   {(() => {
                     const safeImageUrl = ticket.s3ImageUrl.includes('mock-s3-bucket') 
                       ? 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000' 
@@ -204,7 +204,7 @@ export const TicketDetail: React.FC = () => {
                     return (
                       <>
                         <div onClick={() => setIsImageModalOpen(true)} className="block cursor-pointer hover:opacity-90 transition-opacity group">
-                          <img src={safeImageUrl} alt="Evidence" className="max-w-full max-h-[400px] object-contain bg-gray-50 rounded-xl border border-gray-200 shadow-sm" />
+                          <img src={safeImageUrl} alt="Evidence" className="max-w-full max-h-[400px] object-contain bg-secondary rounded-xl border border-border shadow-sm" />
                           <p className="text-xs text-blue-600 mt-3 flex items-center opacity-0 group-hover:opacity-100 transition-opacity font-bold uppercase tracking-wider">
                             <ExternalLink className="w-3.5 h-3.5 mr-1.5" /> Click to view full resolution
                           </p>
@@ -230,21 +230,21 @@ export const TicketDetail: React.FC = () => {
           </div>
 
           {/* NEW: Live Chat / Internal Notes Section */}
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col h-[500px]">
-            <div className="p-5 border-b border-gray-100 bg-gray-50 flex items-center space-x-3">
+          <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden flex flex-col h-[500px]">
+            <div className="p-5 border-b border-border bg-secondary flex items-center space-x-3">
               <div className="p-2 bg-blue-100 rounded-lg">
                 <MessageSquare className="w-5 h-5 text-blue-600" />
               </div>
-              <h3 className="font-bold text-gray-900 tracking-tight">Internal Discussion</h3>
+              <h3 className="font-bold text-foreground tracking-tight">Internal Discussion</h3>
             </div>
             
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gray-50/50">
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-secondary/50">
               {ticket.comments && ticket.comments.length > 0 ? (
                 ticket.comments.map((comment: any, idx: number) => {
                   const isMe = user?.name === comment.authorName;
                   return (
                     <div key={idx} className={`flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
-                      <div className={`max-w-[80%] rounded-2xl px-5 py-3 ${isMe ? 'bg-blue-600 text-white rounded-tr-none' : 'bg-white border border-gray-200 text-gray-800 shadow-sm rounded-tl-none'}`}>
+                      <div className={`max-w-[80%] rounded-2xl px-5 py-3 ${isMe ? 'bg-blue-600 text-white rounded-tr-none' : 'bg-card border border-border text-foreground shadow-sm rounded-tl-none'}`}>
                         <div className={`text-[11px] font-bold uppercase tracking-wider mb-1 ${isMe ? 'text-blue-200' : 'text-gray-400'}`}>
                           {comment.authorName} • {comment.authorRole}
                         </div>
@@ -264,14 +264,14 @@ export const TicketDetail: React.FC = () => {
               )}
             </div>
 
-            <div className="p-4 bg-white border-t border-gray-100">
+            <div className="p-4 bg-card border-t border-border">
               <form onSubmit={handlePostComment} className="flex items-center space-x-3">
                 <input
                   type="text"
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Type a message or internal note..."
-                  className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-[14px] text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                  className="flex-1 bg-secondary border border-border rounded-xl px-4 py-3 text-[14px] text-foreground focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                   disabled={isPosting}
                 />
                 <button
@@ -288,23 +288,23 @@ export const TicketDetail: React.FC = () => {
 
         {/* Right Column: Actions (Now only contains Assign Technician) */}
         <div className="w-full lg:w-[400px] space-y-6">
-          <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
-            <div className="flex items-center space-x-3 border-b border-gray-100 pb-5 mb-8">
+          <div className="bg-card rounded-2xl border border-border p-8 shadow-sm">
+            <div className="flex items-center space-x-3 border-b border-border pb-5 mb-8">
               <div className="p-2.5 bg-blue-50 rounded-xl text-blue-600">
                 <Mail className="h-6 w-6" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 tracking-tight">Automation</h3>
+              <h3 className="text-xl font-bold text-foreground tracking-tight">Automation</h3>
             </div>
             
             <div className="space-y-4">
-              <div className="bg-white rounded-2xl border border-blue-100 shadow-sm overflow-visible">
+              <div className="bg-card rounded-2xl border border-blue-100 shadow-sm overflow-visible">
                 <div className="bg-blue-50/40 p-5 border-b border-blue-100 flex items-center space-x-4">
                   <div className="p-2.5 bg-blue-100 rounded-xl text-blue-700 shadow-sm">
                     <User className="w-6 h-6" />
                   </div>
                   <div>
-                    <h4 className="text-[15px] font-bold text-gray-900">Assign Technician</h4>
-                    <p className="text-xs text-gray-500 mt-1 font-medium">Automated HTML email dispatch</p>
+                    <h4 className="text-[15px] font-bold text-foreground">Assign Technician</h4>
+                    <p className="text-xs text-muted-foreground mt-1 font-medium">Automated HTML email dispatch</p>
                   </div>
                 </div>
                 
@@ -317,7 +317,7 @@ export const TicketDetail: React.FC = () => {
                       </div>
                       <input 
                         type="text"
-                        className="w-full bg-gray-50 border border-gray-200 rounded-xl text-[15px] text-gray-900 pl-11 pr-4 py-3.5 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all shadow-sm"
+                        className="w-full bg-secondary border border-border rounded-xl text-[15px] text-foreground pl-11 pr-4 py-3.5 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all shadow-sm"
                         placeholder="Search name or email..."
                         value={selectedUser}
                         onChange={(e) => {
@@ -330,7 +330,7 @@ export const TicketDetail: React.FC = () => {
                       
                       {/* Autocomplete Dropdown: onMouseDown fixes the click bug */}
                       {showDropdown && selectedUser && filteredEngineers.length > 0 && (
-                        <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-2xl max-h-60 overflow-y-auto overflow-x-hidden left-0 top-full">
+                        <div className="absolute z-50 w-full mt-2 bg-card border border-border rounded-xl shadow-2xl max-h-60 overflow-y-auto overflow-x-hidden left-0 top-full">
                           {filteredEngineers.map((engineer, idx) => (
                             <div 
                               key={idx}
@@ -342,7 +342,7 @@ export const TicketDetail: React.FC = () => {
                               }}
                             >
                               <Mail className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
-                              <span className="text-[15px] text-gray-800 font-semibold truncate">{engineer.email}</span>
+                              <span className="text-[15px] text-foreground font-semibold truncate">{engineer.email}</span>
                             </div>
                           ))}
                         </div>
@@ -376,16 +376,16 @@ export const TicketDetail: React.FC = () => {
       </div>
 
       {/* NEW: Simple Resolution Action at the bottom */}
-      <div className={`rounded-2xl border p-6 sm:p-8 shadow-sm mt-8 flex flex-col sm:flex-row items-center justify-between gap-6 ${ticket.status === 'Pending Review' ? 'bg-red-50 border-red-200' : 'bg-white border-gray-200'}`}>
+      <div className={`rounded-2xl border p-6 sm:p-8 shadow-sm mt-8 flex flex-col sm:flex-row items-center justify-between gap-6 ${ticket.status === 'Pending Review' ? 'bg-red-50 border-red-200' : 'bg-card border-border'}`}>
         <div className="flex items-center space-x-4">
           <div className={`p-3 rounded-xl shadow-sm shrink-0 ${ticket.status === 'Pending Review' ? 'bg-red-100 text-red-600' : 'bg-emerald-50 text-emerald-600'}`}>
             {ticket.status === 'Pending Review' ? <AlertCircle className="h-7 w-7" /> : <CheckCircle className="h-7 w-7" />}
           </div>
           <div>
-            <h3 className={`text-xl font-extrabold tracking-tight ${ticket.status === 'Pending Review' ? 'text-red-900' : 'text-gray-900'}`}>
+            <h3 className={`text-xl font-extrabold tracking-tight ${ticket.status === 'Pending Review' ? 'text-red-900' : 'text-foreground'}`}>
               {ticket.status === 'Pending Review' ? 'Approve & Resolve Ticket' : 'Close & Resolve'}
             </h3>
-            <p className={`text-sm mt-1 font-medium ${ticket.status === 'Pending Review' ? 'text-red-700' : 'text-gray-500'}`}>
+            <p className={`text-sm mt-1 font-medium ${ticket.status === 'Pending Review' ? 'text-red-700' : 'text-muted-foreground'}`}>
               {ticket.status === 'Pending Review' 
                 ? 'The engineer marked this as fixed. Review their notes and click approve to finalize and notify the client.' 
                 : 'This will resolve the ticket and automatically notify stakeholders.'}

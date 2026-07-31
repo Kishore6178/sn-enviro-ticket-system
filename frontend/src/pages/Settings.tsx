@@ -51,44 +51,44 @@ export const Settings: React.FC = () => {
           <SettingsIcon className="h-6 w-6 text-blue-600" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Admin Account</h2>
-          <p className="text-gray-500 text-sm mt-1">Update your admin credentials</p>
+          <h2 className="text-2xl font-bold text-foreground">Admin Account</h2>
+          <p className="text-muted-foreground text-sm mt-1">Update your admin credentials</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-gray-100 bg-gray-50">
-          <h3 className="font-semibold text-gray-900">Admin Profile Settings</h3>
-          <p className="text-sm text-gray-500">Update your account details here.</p>
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
+        <div className="p-6 border-b border-border bg-secondary">
+          <h3 className="font-semibold text-foreground">Admin Profile Settings</h3>
+          <p className="text-sm text-muted-foreground">Update your account details here.</p>
         </div>
         
         <form onSubmit={handleUpdate} className="p-6 space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Full Name</label>
+            <label className="text-sm font-medium text-foreground">Full Name</label>
             <input 
               type="text" 
-              className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 bg-card border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">Email Address</label>
+            <label className="text-sm font-medium text-foreground">Email Address</label>
             <input 
               type="email" 
-              className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 cursor-not-allowed"
+              className="w-full px-4 py-2 bg-secondary border border-border rounded-lg text-muted-foreground cursor-not-allowed"
               value={user?.email || ''}
               disabled
             />
-            <p className="text-xs text-gray-500">Email cannot be changed.</p>
+            <p className="text-xs text-muted-foreground">Email cannot be changed.</p>
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700">New Password</label>
+            <label className="text-sm font-medium text-foreground">New Password</label>
             <input 
               type="password" 
-              className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 bg-card border border-gray-300 rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Leave blank to keep current password"
@@ -109,21 +109,21 @@ export const Settings: React.FC = () => {
       </div>
       
       {/* Appearance Section */}
-      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mt-8">
-        <div className="p-6 border-b border-gray-100 bg-gray-50">
-          <h3 className="font-semibold text-gray-900">Appearance</h3>
-          <p className="text-sm text-gray-500">Customize how the dashboard looks.</p>
+      <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden mt-8">
+        <div className="p-6 border-b border-border bg-secondary">
+          <h3 className="font-semibold text-foreground">Appearance</h3>
+          <p className="text-sm text-muted-foreground">Customize how the dashboard looks.</p>
         </div>
         
         <div className="p-6 space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-gray-100 rounded-lg">
-                {theme === 'dark' ? <Moon className="h-5 w-5 text-gray-700" /> : <Sun className="h-5 w-5 text-gray-700" />}
+              <div className="p-2 bg-secondary rounded-lg">
+                {theme === 'dark' ? <Moon className="h-5 w-5 text-foreground" /> : <Sun className="h-5 w-5 text-foreground" />}
               </div>
               <div>
-                <p className="font-medium text-gray-900">Dark Mode</p>
-                <p className="text-sm text-gray-500">Toggle dark mode on or off</p>
+                <p className="font-medium text-foreground">Dark Mode</p>
+                <p className="text-sm text-muted-foreground">Toggle dark mode on or off</p>
               </div>
             </div>
             
@@ -134,7 +134,7 @@ export const Settings: React.FC = () => {
               }`}
             >
               <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                className={`inline-block h-4 w-4 transform rounded-full bg-card transition-transform ${
                   theme === 'dark' ? 'translate-x-6' : 'translate-x-1'
                 }`}
               />

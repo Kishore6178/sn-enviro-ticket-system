@@ -1,6 +1,7 @@
-import { Menu, UserCircle, LogOut } from 'lucide-react';
+import { Menu, UserCircle, LogOut, Sun, Moon } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
@@ -10,6 +11,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
   const { user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const navigate = useNavigate();
 
@@ -51,6 +53,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick }) => {
           </div>
           <UserCircle className="h-8 w-8 text-muted-foreground" />
           <div className="h-6 w-px bg-border mx-2" />
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-muted-foreground hover:text-foreground">
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
           <Button variant="ghost" size="icon" onClick={handleLogout} className="text-destructive hover:bg-destructive/10">
             <LogOut className="h-5 w-5" />
           </Button>

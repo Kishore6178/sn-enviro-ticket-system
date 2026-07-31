@@ -39,7 +39,7 @@ export const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 p-4">
-      <div className="w-full max-w-[1000px] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+      <div className="w-full max-w-[1000px] bg-card rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
         
         {/* Left Side: Colorful Branding */}
         <div className="hidden md:flex md:w-1/2 bg-blue-600 p-8 md:p-12 text-white flex-col justify-between relative overflow-hidden">
@@ -51,7 +51,7 @@ export const Login: React.FC = () => {
 
           <div className="relative z-10 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start space-x-3 mb-6 md:mb-12">
-              <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm">
+              <div className="p-2 bg-card/10 rounded-xl backdrop-blur-sm">
                 <img src="/logo.jpeg" alt="Logo" className="h-8 w-8 md:h-10 md:w-10 object-contain drop-shadow-md rounded-full" />
               </div>
               <span className="text-xl md:text-2xl font-bold tracking-wider">SN ENVIRO</span>
@@ -73,11 +73,11 @@ export const Login: React.FC = () => {
         </div>
 
         {/* Right Side: Login Form */}
-        <div className="md:w-1/2 p-8 md:p-12 flex items-center bg-white">
+        <div className="md:w-1/2 p-8 md:p-12 flex items-center bg-card">
           <div className="w-full max-w-sm mx-auto">
             <div className="mb-10 text-center md:text-left">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-              <p className="text-gray-500">Sign in to your admin account.</p>
+              <h2 className="text-3xl font-bold text-foreground mb-2">Welcome Back</h2>
+              <p className="text-muted-foreground">Sign in to your admin account.</p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-6">
@@ -89,7 +89,7 @@ export const Login: React.FC = () => {
               )}
               
               <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 tracking-wide" htmlFor="email">Email Address</label>
+                <label className="text-sm font-bold text-foreground tracking-wide" htmlFor="email">Email Address</label>
                 <div className="relative group">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
                   <input
@@ -99,14 +99,14 @@ export const Login: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all font-medium placeholder:text-gray-400 placeholder:font-normal"
+                    className="w-full pl-12 pr-4 py-3.5 bg-secondary border border-border rounded-xl text-foreground focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all font-medium placeholder:text-gray-400 placeholder:font-normal"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-sm font-bold text-gray-700 tracking-wide" htmlFor="password">Password</label>
+                  <label className="text-sm font-bold text-foreground tracking-wide" htmlFor="password">Password</label>
                   <a href="#" className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">Forgot password?</a>
                 </div>
                 <div className="relative group">
@@ -118,7 +118,7 @@ export const Login: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all font-medium placeholder:text-gray-400 placeholder:font-normal"
+                    className="w-full pl-12 pr-4 py-3.5 bg-secondary border border-border rounded-xl text-foreground focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all font-medium placeholder:text-gray-400 placeholder:font-normal"
                   />
                 </div>
               </div>

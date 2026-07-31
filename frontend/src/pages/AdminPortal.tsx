@@ -59,18 +59,18 @@ export const AdminPortal: React.FC = () => {
   return (
     <div className="p-8 max-w-4xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Admin Portal</h1>
-        <p className="text-gray-500 mt-1">Manage your administrator account settings</p>
+        <h1 className="text-2xl font-bold text-foreground">Admin Portal</h1>
+        <p className="text-muted-foreground mt-1">Manage your administrator account settings</p>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
         <form onSubmit={handleUpdateProfile} className="p-6 space-y-6">
           
           <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900 border-b pb-2">Profile Information</h3>
+            <h3 className="text-lg font-medium text-foreground border-b pb-2">Profile Information</h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Admin Name
               </label>
               <div className="relative">
@@ -89,7 +89,7 @@ export const AdminPortal: React.FC = () => {
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Email Address
               </label>
               <div className="relative">
@@ -97,18 +97,18 @@ export const AdminPortal: React.FC = () => {
                   type="email"
                   value={user?.email || ''}
                   disabled
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 px-3 text-gray-500 cursor-not-allowed"
+                  className="w-full rounded-lg border border-border bg-secondary py-2 px-3 text-muted-foreground cursor-not-allowed"
                 />
-                <p className="text-xs text-gray-500 mt-1">Email address cannot be changed.</p>
+                <p className="text-xs text-muted-foreground mt-1">Email address cannot be changed.</p>
               </div>
             </div>
           </div>
 
           <div className="space-y-4 pt-4">
-            <h3 className="text-lg font-medium text-gray-900 border-b pb-2">Change Password</h3>
+            <h3 className="text-lg font-medium text-foreground border-b pb-2">Change Password</h3>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Current Password
               </label>
               <div className="relative">
@@ -125,7 +125,7 @@ export const AdminPortal: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-muted-foreground"
                 >
                   {showCurrentPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -134,7 +134,7 @@ export const AdminPortal: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   New Password
                 </label>
                 <div className="relative">
@@ -151,7 +151,7 @@ export const AdminPortal: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowNewPassword(!showNewPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-muted-foreground"
                   >
                     {showNewPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
@@ -159,7 +159,7 @@ export const AdminPortal: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Confirm New Password
                 </label>
                 <div className="relative">
@@ -176,7 +176,7 @@ export const AdminPortal: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-muted-foreground"
                   >
                     {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>

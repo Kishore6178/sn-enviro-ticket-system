@@ -29,10 +29,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ className, onClose }) => {
       <div className="h-16 flex items-center justify-between px-6 border-b border-border">
         <a href="/dashboard" className="flex items-center cursor-pointer hover:opacity-80 transition-opacity">
           <img src="/logo.jpeg" alt="Logo" className="h-8 w-8 object-contain mr-2 drop-shadow-sm rounded-full" />
-          <h1 className="text-xl font-bold text-gray-900 tracking-tight leading-tight">SN Enviro <br/><span className="text-sm font-semibold text-blue-600">Ticket System</span></h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white tracking-tight leading-tight">SN Enviro <br/><span className="text-sm font-semibold text-blue-600">Ticket System</span></h1>
         </a>
         {onClose && (
-          <button onClick={onClose} className="md:hidden text-gray-600 hover:text-gray-900">
+          <button onClick={onClose} className="md:hidden text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
             <X className="h-6 w-6" />
           </button>
         )}
@@ -50,7 +50,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ className, onClose }) => {
                 "group relative flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors z-10",
                 isActive
                   ? "text-primary"
-                  : "text-gray-600 hover:text-gray-900"
+                  : "text-muted-foreground hover:text-foreground"
               )
             }
           >
@@ -77,14 +77,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ className, onClose }) => {
                   {isHovered && !isActive && (
                     <motion.div 
                       layoutId="hoverBackground"
-                      className="absolute inset-0 bg-gray-100/80 rounded-lg -z-10"
+                      className="absolute inset-0 bg-secondary/80 rounded-lg -z-10"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     />
                   )}
-                  <item.icon className={cn("h-5 w-5 z-20 transition-colors", isActive ? "text-primary" : "text-gray-500 group-hover:text-primary")} />
+                  <item.icon className={cn("h-5 w-5 z-20 transition-colors", isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary")} />
                   <span className="z-20">{item.label}</span>
                 </>
               );
